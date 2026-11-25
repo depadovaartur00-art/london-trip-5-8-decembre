@@ -1,4 +1,4 @@
-const CACHE = "londre1-v1";
+const CACHE = "londre1-v2";
 const ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./private-diary.js"];
 
 self.addEventListener("install", event => {
