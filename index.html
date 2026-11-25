@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#191811" />
+  <title>London, for two — 5-8 dicembre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Torna all'inizio">
+      <span class="brand-mark">L</span>
+      <span>LONDON / 25</span>
+    </a>
+    <button class="menu-button" id="menuButton" aria-label="Apri menu" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <nav class="nav-sheet" id="navSheet" aria-label="Navigazione principali">
+    <a href="#giorni" data-close>Itinerario</a>
+    <a href="#da-mangiare" data-close>Dove mangiare</a>
+    <a href="#preparativi" data-close>Da preparare</a>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> 5—8 dicembre</p>
+        <h1>London,<br><em>for two.</em></h1>
+        <p class="hero-sub">Quattro giorni tra luci, musei e lunghe passeggiate. Tutto quello che serve, sempre a portata di mano.</p>
+      </div>
+      <div class="weather-card">
+        <div class="weather-icon" aria-hidden="true">◒</div>
+        <div>
+          <span>Basecamp</span>
+          <strong>Z Hotel Holborn</strong>
+        </div>
+      </div>
+      <a class="start-button" href="#giorni">
+        <span>Inizia il viaggio</span>
+        <span aria-hidden="true">↓</span>
+      </a>
+    </section>
+
+    <section class="overview" aria-label="Riepilogo viaggio">
+      <article><strong>4</strong><span>giorni</span></article>
+      <article><strong>3</strong><span>quartieri da incorniciare</span></article>
+      <article><strong>∞</strong><span>foto da fare</span></article>
+    </section>
+
+    <section class="days" id="giorni">
+      <div class="section-heading">
+        <p class="eyebrow">Il piano</p>
+        <h2>Ogni giorno,<br><em>una storia.</em></h2>
+      </div>
+
+      <div class="day-tabs" role="tablist" aria-label="Seleziona il giorno">
+        <button class="active" role="tab" aria-selected="true" data-day="0"><span>05</span>Sabato</button>
+        <button role="tab" aria-selected="false" data-day="1"><span>06</span>Domenica</button>
+        <button role="tab" aria-selected="false" data-day="2"><span>07</span>Lunedì</button>
+        <button role="tab" aria-selected="false" data-day="3"><span>08</span>Martedì</button>
+      </div>
+
+      <div id="itinerary"></div>
+    </section>
+
+    <section class="food" id="da-mangiare">
+      <div class="section-heading">
+        <p class="eyebrow">Buoni appunti</p>
+        <h2>Dove mangiare<br><em>lungo la strada.</em></h2>
+      </div>
+      <div class="food-filter" aria-label="Filtra ristoranti">
+        <button class="active" data-filter="all">Tutti</button>
+        <button data-filter="quick">Veloce</button>
+        <button data-filter="lunch">Pranzo</button>
+        <button data-filter="dinner">Cena</button>
+      </div>
+      <div class="food-grid" id="foodGrid"></div>
+    </section>
+
+    <section class="prep" id="preparativi">
+      <div class="section-heading">
+        <p class="eyebrow">Prima di partire</p>
+        <h2>La lista<br><em>dei pronti.</em></h2>
+      </div>
+      <div class="checklist" id="checklist"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-mark">L</div>
+    <p>Made for 5—8 December</p>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
