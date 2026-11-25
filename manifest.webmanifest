@@ -1,0 +1,10 @@
+{
+  "name": "London for Two",
+  "short_name": "London Trip",
+  "description": "Itinerario Londra 5-8 dicembre",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f2efe6",
+  "theme_color": "#191811",
+  "lang": "it"
+}

@@ -5,8 +5,8 @@ const days = [
     title: "Covent Garden",
     date: "Sabato 5 dicembre",
     stops: [
-      { time:"12:15", title:"Gatwick → Z Hotel Holborn", text:"Treno verso Farringdon, poi Elizabeth line o metro fino a Holborn.", meta:["60–90 min","Treno + metro"], route:["Gatwick Airport","Z Hotel Holborn"], walk:"" },
-      { time:"14:00", title:"Check-in e pranzo veloce", text:"Lasciate i bagagli e mangiate nei dintorni di Holborn.", meta:["Lasciate i bagagli"], route:["Z Hotel Holborn","Covent Garden"], walk:"a piedi · 10–15 min" },
+      { time:"12:15", title:"Gatwick → Z Hotel Holborn", text:"Treno verso Farringdon, poi Elizabeth line o metro fino a Holborn.", meta:["60–90 min","Treno + metro"], route:["Gatwick Airport","Z Hotel Holborn"], walk:"Metro + treno" },
+      { time:"14:00", title:"Check-in e pranzo veloce", text:"Lasciate i bagagli e mangiate nei dintorni di Holborn.", meta:["Lasciate i bagagli"], route:["Z Hotel Holborn","Holborn, London"], walk:"A piedi nei dintorni" },
       { time:"14:30", title:"Covent Garden", text:"Piazza, mercato coperto e le stradine intorno.", meta:["1 ora"], route:["Z Hotel Holborn","Covent Garden"], walk:"a piedi · 10–15 min" },
       { time:"15:00", title:"Scuffers — 52 Brewer Street", text:"Felpa e cappellino qui. Poi dedicate tempo a Soho e alle vie laterali.", meta:["Fino a 90 min"], route:["Covent Garden","52 Brewer Street, Soho, London"], walk:"a piedi · 15–20 min" },
       { time:"16:30", title:"Oxford Street", text:"Da Oxford Circus lungo una parte delle vetrine e delle luminarie.", meta:["Noi non facciamo tutta la strada"], route:["52 Brewer Street, Soho, London","Oxford Circus, London"], walk:"a piedi · 10–15 min" },
@@ -55,27 +55,21 @@ const days = [
 ];
 
 const food = [
-  { name:"Dishoom Covent Garden", area:"Covent Garden", type:"dinner", category:"Cena", desc:"India contemporanea in una sala splendida. Conviene prenotare.", query:"Dishoom Covent Garden" },
-  { name:"The Barbary", area:"Neal's Yard / Covent Garden", type:"dinner", category:"Cena", desc:"Piatti del Mediterraneo e del Nord Africa; ambiente piccolo e scenografico.", query:"The Barbary London" },
-  { name:"Flat Iron", area:"Soho / Covent Garden", type:"dinner", category:"Cena", desc:"Buona carne, servizio semplice e prezzo contenuto. Nessuna prenotazione.", query:"Flat Iron Soho" },
-  { name:"Speedy's Cafe", area:"Tottenham Court Road", type:"lunch", category:"Pranzo", desc:"Caffè britannico vicino al British Museum, veloce e informale.", query:"Speedy's Cafe London" },
-  { name:"The Breakfast Club", area:"Soho", type:"lunch", category:"Pranzo veloce", desc:"Burger, brunch e comfort food. Ottimo se avete poco tempo.", query:"The Breakfast Club Soho" },
-  { name:"Pret A Manger", area:"Holborn / ovunque", type:"quick", category:"Veloce", desc:"Sandwich, insalate e panini: molto comodo per il check-in e i ritmi stretti.", query:"Pret A Manger Holborn" },
-  { name:"Five Guys", area:"South Kensington", type:"lunch", category:"Pranzo", desc:"Previsto nell'itinerario, 5 minuti dal Science Museum.", query:"Five Guys South Kensington" },
-  { name:"Borough Market", area:"South Bank", type:"lunch", category:"Merenda / pranzo", desc:"Ideale per un boccone rapido fra Tate Modern e Tower Bridge.", query:"Borough Market London" },
-  { name:"The Grade", area:"Holborn", type:"dinner", category:"Cena", desc:"Pub britannico vicino alla base: comodo dopo il rientro serale.", query:"The Grade Holborn" }
+  { name:"Dishoom Covent Garden", area:"Covent Garden", type:"dinner", category:"Cena", time:"18:00+", price:"££", duration:"60–75 min", desc:"India contemporanea in una sala splendida.", query:"Dishoom Covent Garden" },
+  { name:"The Barbary", area:"Neal's Yard / Covent Garden", type:"dinner", category:"Cena", time:"18:30+", price:"£££", duration:"75–90 min", desc:"Mediterraneo e Nord Africa in un ambiente piccolo e scenografico.", query:"The Barbary London" },
+  { name:"Flat Iron", area:"Soho / Covent Garden", type:"dinner", category:"Cena", time:"18:00+", price:"£", duration:"45–60 min", desc:"Buona carne, servizio semplice e prezzo contenuto.", query:"Flat Iron Soho" },
+  { name:"Speedy's Cafe", area:"Tottenham Court Road", type:"lunch", category:"Pranzo", time:"12:30–13:00", price:"£", duration:"30–45 min", desc:"Caffè britannico vicino al British Museum, veloce e informale.", query:"Speedy's Cafe London" },
+  { name:"The Breakfast Club", area:"Soho", type:"lunch", category:"Pranzo veloce", time:"12:00–13:00", price:"££", duration:"45–60 min", desc:"Burger, brunch e comfort food. Ottimo con poco tempo.", query:"The Breakfast Club Soho" },
+  { name:"Pret A Manger", area:"Holborn / ovunque", type:"quick", category:"Veloce", time:"14:00", price:"£", duration:"15–25 min", desc:"Sandwich e insalate: comodo per il check-in e i ritmi stretti.", query:"Pret A Manger Holborn" },
+  { name:"Five Guys", area:"South Kensington", type:"lunch", category:"Pranzo", time:"12:30", price:"£", duration:"30–45 min", desc:"Previsto nell'itinerario, a 5 minuti dal Science Museum.", query:"Five Guys South Kensington" },
+  { name:"Borough Market", area:"South Bank", type:"lunch", category:"Merenda / pranzo", time:"15:30–17:30", price:"£", duration:"30–60 min", desc:"Ideale fra Tate Modern e Tower Bridge.", query:"Borough Market London" },
+  { name:"The Grade", area:"Holborn", type:"dinner", category:"Cena", time:"18:30+", price:"££", duration:"60–90 min", desc:"Pub britannico vicino alla base: comodo dopo il rientro serale.", query:"The Grade Holborn" }
 ];
 
 const prep = [
   "Portare passaporto",
   "Adattatore britannico",
   "Imparare le foto da fare",
-  "Prenotare National Gallery",
-  "Prenotare British Museum",
-  "Prenotare Science Museum",
-  "Prenotare Natural History Museum",
-  "Prenotare Tate Modern",
-  "Prenotare St Paul's Cathedral",
   "Confermare il deposito bagagli",
   "Chiedere tap water nei locali",
   "Preparare carta contactless o Oyster",
@@ -88,6 +82,16 @@ function mapsUrl(origin,destination,mode="walking") {
 
 function renderDay(index) {
   const day = days[index];
+  const next = day.stops[0];
+  const nextMode = next.walk?.includes("Taxi") ? "driving" : next.walk?.match(/Metro|treno/i) ? "transit" : "walking";
+  document.getElementById("nextCard").innerHTML = `
+    <div class="next-time">${next.time}</div>
+    <div><small>Prossima tappa</small><strong>${next.title}</strong></div>
+    ${next.route?.[1] ? `<a href="${mapsUrl(next.route[0],next.route[1],nextMode)}" target="_blank" rel="noopener" aria-label="Portami alla prossima tappa">↗</a>` : "<span></span>"}`;
+
+  document.getElementById("routeMap").innerHTML = day.stops.map((stop,i)=>`
+    <div class="route-point"><i class="route-dot"></i><span>${stop.title.split(" ").slice(0,2).join("<br>")}</span></div>`).join("");
+
   document.getElementById("itinerary").innerHTML = `
     <div class="day-header"><h3>${day.title}</h3><p>${day.date}</p></div>
     <div class="timeline">
@@ -100,7 +104,7 @@ function renderDay(index) {
             <p>${stop.text}</p>
             ${stop.walk ? `<div class="route-note">${stop.walk}</div>` : ""}
             ${stop.meta ? `<div class="stop-tags">${stop.meta.map(m=>`<span class="stop-tag">${m}</span>`).join("")}</div>` : ""}
-            ${canMap ? `<a class="map-link" href="${mapsUrl(stop.route[0],stop.route[1], stop.walk?.includes("Metro") ? "transit" : stop.walk?.includes("Taxi") ? "driving" : "walking")}" target="_blank" rel="noopener">Apri tragitto <span>↗</span></a>` : ""}
+            ${canMap ? `<a class="map-link" href="${mapsUrl(stop.route[0],stop.route[1], stop.walk?.includes("Taxi") ? "driving" : stop.walk?.match(/Metro|treno/i) ? "transit" : "walking")}" target="_blank" rel="noopener">Apri tragitto <span>↗</span></a>` : ""}
           </div>
         </article>`;
       }).join("")}
@@ -112,7 +116,12 @@ function renderFood(filter="all") {
     .filter(item => filter==="all" || item.type===filter)
     .map(item => `
       <article class="food-card">
-        <div><span class="food-type">${item.category} · ${item.area}</span><h3>${item.name}</h3><p>${item.desc}</p></div>
+        <div>
+          <span class="food-type">${item.category} · ${item.area}</span>
+          <h3>${item.name}</h3>
+          <p>${item.desc}</p>
+          <div class="food-meta"><span>${item.time}</span><span>${item.duration}</span><span>${item.price}</span></div>
+        </div>
         <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.query)}" target="_blank" rel="noopener" aria-label="Apri ${item.name} su Google Maps">↗</a>
       </article>`).join("");
 }
@@ -166,3 +175,7 @@ navSheet.querySelectorAll("[data-close]").forEach(link=>link.addEventListener("c
 renderDay(0);
 renderFood();
 renderChecklist();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
