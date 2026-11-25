@@ -1,122 +1,468 @@
 <!doctype html>
-<html lang="it">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#132a35" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>London, for two — 5-8 dicembre</title>
-  <link rel="manifest" href="./manifest.webmanifest" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23132a35'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Georgia' font-size='38' fill='%23f7f1df'%3EL%3C/text%3E%3C/svg%3E" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-</head>
-<body>
-  <div class="grain" aria-hidden="true"></div>
-  <header class="topbar">
-    <a class="brand" href="#itinerario" data-route="itinerario" aria-label="Vai all'itinerario">
-      <span class="brand-mark">L</span>
-      <span>LONDON / 25</span>
-    </a>
-    <button class="menu-button" id="menuButton" aria-label="Apri menu" aria-expanded="false">
-      <span></span><span></span>
-    </button>
-  </header>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f2747">
+<title>Londra 5–8 dicembre – il nostro programma</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<style>
+:root{--bg:#f3f5f9;--card:#fff;--ink:#14202e;--mut:#667587;--line:#e1e6ee;--navy:#0f2747;--red:#c8102e;--blue:#0b5fa5;--land:#f4f0e8;--park:#cfe6c4;--water:#a8cdea;--road:#fff;--roadl:#e0d9c9;--chip:#eef2f8;--walk:#c8102e;--metro:#0b5fa5;--pri:#0f2747;--prit:#fff;--sh:0 1px 2px rgba(15,39,71,.06),0 10px 28px rgba(15,39,71,.09);box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1118;--card:#151d28;--ink:#e9eef5;--mut:#93a1b3;--line:#263242;--land:#1b232d;--park:#1f3727;--water:#1b3852;--road:#2b3644;--roadl:#364252;--chip:#1e2938;--walk:#ff5a6e;--metro:#5aa9f0;--pri:#5aa9f0;--prit:#07121f;--sh:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0c1118;--card:#151d28;--ink:#e9eef5;--mut:#93a1b3;--line:#263242;--land:#1b232d;--park:#1f3727;--water:#1b3852;--road:#2b3644;--roadl:#364252;--chip:#1e2938;--walk:#ff5a6e;--metro:#5aa9f0;--pri:#5aa9f0;--prit:#07121f;--sh:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:env(safe-area-inset-bottom,0px)}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:6px 12px;transition:background .15s,border-color .15s,transform .05s}
+button:hover{border-color:var(--mut)}button:active{transform:scale(.97)}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+input{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.t{font-size:12px;color:var(--mut)}
+.pri{background:var(--pri);color:var(--prit);border-color:var(--pri);font-weight:600}.pri:hover{border-color:var(--pri);filter:brightness(1.1)}
+.hero{background:linear-gradient(135deg,#0f2747 0%,#1d3a6b 55%,#8a1230 100%);color:#fff;padding:calc(env(safe-area-inset-top,0px) + 22px) 16px 18px;border-radius:0 0 26px 26px}
+.hin{max-width:1180px;margin:0 auto}
+.hero h1{margin:0;font-size:34px;line-height:1.1;font-weight:800;letter-spacing:-.02em}
+.hero p{margin:4px 0 0;opacity:.85;font-size:14px}
+.tabs{display:flex;gap:8px;margin-top:16px;overflow-x:auto;padding-bottom:2px}
+.tab{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:#fff;border-radius:14px;padding:8px 14px;white-space:nowrap;text-align:left;line-height:1.25}
+.tab:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4)}
+.tab small{display:block;opacity:.8;font-size:11px}.tab b{font-size:16px}
+.tab[aria-selected="true"]{background:#fff;color:#0f2747;border-color:#fff}
+.sun{margin-top:12px;font-size:13px;opacity:.9}
+.seg{display:none;max-width:1180px;margin:14px auto 0;padding:0 14px}
+.seg>div{display:grid;grid-template-columns:1fr 1fr;background:var(--chip);border-radius:12px;padding:4px;gap:4px}
+.seg button{border:0;background:transparent;border-radius:9px;padding:8px}.seg button[aria-pressed="true"]{background:var(--card);box-shadow:var(--sh);font-weight:600}
+main{max-width:1180px;margin:0 auto;padding:16px 14px 90px;display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+main>section{min-width:0}
+@media(min-width:900px){main{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);align-items:start}#mapsec{position:sticky;top:12px}}
+@media(max-width:899px){.seg{display:block}main[data-v="map"] #plan{display:none}main[data-v="plan"] #mapsec{display:none}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--sh)}
+.sbox{position:relative}.sbox input{width:100%;padding-left:36px;border-radius:12px}.sbox:before{content:"🔍";position:absolute;left:11px;top:8px;font-size:14px}
+#sr{position:absolute;left:0;right:0;top:100%;margin-top:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh);z-index:30;max-height:300px;overflow:auto}
+#sr button{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;padding:8px 12px}#sr button:last-child{border:0}
+.chips{display:flex;gap:6px;overflow-x:auto;margin:10px 0 10px;padding-bottom:2px}
+.chip{background:var(--chip);border:1px solid transparent;border-radius:99px;padding:3px 11px;font-size:13px;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+#wrap{position:relative;border-radius:14px;overflow:hidden}
+.legacy-map svg{width:100%;height:auto;max-height:66vh;display:block;background:var(--land);touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.legacy-map svg:active{cursor:grabbing}.legacy-map svg g[data-p]{cursor:pointer}
+.zb{position:absolute;right:10px;top:10px;display:grid;gap:6px}.zb button{width:36px;height:36px;padding:0;border-radius:10px;box-shadow:var(--sh);font-size:17px}
+#pop{position:absolute;left:10px;right:10px;bottom:10px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);padding:12px 14px;max-width:520px}
+#pop[hidden]{display:none}
+#pop .x{position:absolute;right:8px;top:8px;border:0;background:transparent;padding:4px 8px}
+#pop .pt{display:flex;gap:10px;align-items:center;margin-right:28px}
+.pe{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:20px;flex:none}
+#pop p{margin:8px 0;font-size:13.5px;max-height:92px;overflow:auto}
+.pa{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.ph h2{margin:0;font-size:20px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0}
+.row label{font-size:12px;color:var(--mut);display:flex;flex-direction:column;gap:2px}
+.row input[type=time]{padding:5px 8px}
+.empty{text-align:center;padding:26px 10px;color:var(--mut)}.empty:first-letter{font-size:38px}.empty p{margin:4px 0}
+.leg{display:flex;align-items:center;gap:10px;margin:8px 0 8px 14px;padding-left:18px;border-left:3px dotted var(--line)}
+.sg{display:inline-flex;background:var(--chip);border-radius:10px;padding:2px}
+.sg button{border:0;background:transparent;padding:3px 10px;font-size:13px;border-radius:8px}.sg button.on{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.15);font-weight:600}
+.stop{border:1px solid var(--line);border-left:5px solid var(--c,var(--navy));border-radius:14px;padding:12px;background:var(--card);transition:box-shadow .15s}
+.stop:hover,.stop.hv{box-shadow:var(--sh)}
+.sh{display:flex;gap:10px;align-items:flex-start}
+.num{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+.sh>div:nth-child(2){flex:1;min-width:0}
+.name{font-weight:700;font-size:16px;line-height:1.25}.name input{width:100%;font-weight:600}
+.meta{font-size:13px;color:var(--mut);margin-top:2px}
+.ctl{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.ctl button{padding:3px 8px;border-radius:8px;font-size:13px}
+.grip{cursor:grab;padding:2px 6px;color:var(--mut);user-select:none}
+.dw{display:inline-flex;align-items:center;gap:2px;background:var(--chip);border-radius:10px;padding:2px}.dw button{border:0;background:transparent;padding:2px 8px}.dw span{min-width:54px;text-align:center;font-size:13px}
+.desc{margin:10px 0 6px;font-size:14.5px}
+.badge{display:inline-block;font-size:12px;padding:2px 9px;border-radius:99px;border:1px solid var(--line);margin:2px 4px 2px 0;color:var(--mut)}
+.badge.w{color:#b45309;border-color:#e9b56b;background:rgba(245,158,11,.08)}.badge.ok{color:#15803d;border-color:#8fd5a6;background:rgba(34,197,94,.08)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .badge.w{color:#fbbf24}:root:not([data-theme="light"]) .badge.ok{color:#4ade80}}
+.stop input.note{width:100%;margin-top:6px;font-size:13px}
+.lk{margin-top:8px;display:flex;gap:14px;flex-wrap:wrap;font-size:13px}
+.tot{margin-top:14px;padding:12px 14px;background:var(--chip);border-radius:14px}
+textarea{width:100%;min-height:160px;font:12px/1.45 ui-monospace,monospace;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0}
+details{margin-top:14px}summary{cursor:pointer;font-weight:600}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 18px);background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:12px;box-shadow:var(--sh);z-index:50;display:flex;gap:12px;align-items:center;max-width:92vw}
+#toast[hidden]{display:none}#toast button{background:transparent;color:inherit;border:1px solid currentColor;padding:2px 10px}
+</style><style>#map{height:66vh;min-height:440px;width:100%;max-height:none;background:#dce6ed;touch-action:pan-x pan-y}.leaflet-container{font:14px system-ui,-apple-system,"Segoe UI",sans-serif;background:#dce6ed}.leaflet-tile{max-width:none!important;max-height:none!important}.leaflet-pane,.leaflet-map-pane{z-index:auto}.pin{width:30px;height:30px;border:2px solid white;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:14px;font-weight:800;box-shadow:0 2px 7px #0005}.pin.hotel{width:38px;height:38px;border-radius:12px;background:#0b5fa5;font-size:18px}.pin.poi{background:#0f2747}.pin.selected{outline:4px solid #fbbf24;transform:scale(1.15)}.pin.other{font-size:15px}#wrap{overflow:hidden}</style>
 
-  <nav class="nav-sheet" id="navSheet" aria-label="Navigazione principali">
-    <a href="#itinerario" data-route="itinerario" data-close>Itinerario</a>
-    <a href="#ristoranti" data-route="ristoranti" data-close>Ristoranti</a>
-    <a href="#trasporti" data-route="trasporti" data-close>Trasporti</a>
-    <a href="#diario" data-route="diario" data-close>Diario privato</a>
-  </nav>
+<style>
+.tools{max-width:1180px;margin:0 auto;padding:0 14px 28px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.tools .card{min-width:0}.tools h2{margin:0 0 8px;font-size:19px}.tools h3{font-size:15px;margin:12px 0 6px}.tools input,.tools select,.tools textarea{max-width:100%}.tools textarea{min-height:105px}.wide{grid-column:1/-1}.toolrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}.toolrow input,.toolrow select{min-width:0;flex:1}.toolbtn{background:var(--chip);border:1px solid var(--line);border-radius:10px;padding:7px 10px}.expense{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}.expense button{padding:1px 7px}.checkgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.checkitem{display:flex;align-items:center;gap:8px;background:var(--chip);border-radius:10px;padding:8px;font-size:14px}.checkitem input{width:auto}.muted{color:var(--mut);font-size:12px}.nearlist{display:grid;gap:7px}.nearitem{padding:8px 10px;border:1px solid var(--line);border-radius:10px;display:flex;justify-content:space-between;gap:10px;align-items:center}.nearitem small{display:block;color:var(--mut)}.weatherlinks{display:flex;gap:8px;flex-wrap:wrap}.mobile-mode main{grid-template-columns:1fr!important}.mobile-mode #mapsec{position:relative!important;top:auto!important}.mobile-mode #map{height:48vh;min-height:300px}.mobile-mode .hero h1{font-size:27px}.mobile-mode .tools{grid-template-columns:1fr}.mobile-mode .tools .wide{grid-column:auto}
+@media(max-width:680px){.tools{grid-template-columns:1fr}.tools .wide{grid-column:auto}.checkgrid{grid-template-columns:1fr 1fr}.tools input,.tools select,.tools textarea{font-size:16px;min-height:42px}.tools button{min-height:42px}.tools .toolrow>input,.tools .toolrow>select{flex:1 1 125px;min-width:0}.nearitem{align-items:flex-start}.tools .card{padding:12px}}
+</style>
+</head><body>
+<div class="hero"><div class="hin"><h1>Londra</h1><p>5–8 dicembre · base: Z Hotel Holborn · <span id="sync"></span></p>
+<div class="tabs" id="tabs" role="tablist" aria-label="Giorni"></div><div class="sun" id="sun"></div></div></div>
+<div class="seg"><div><button data-v="map" aria-pressed="true">🗺️ Mappa</button><button data-v="plan" aria-pressed="false">📋 Programma</button></div></div>
+<main data-v="map">
+<section class="card" id="mapsec">
+<div class="sbox"><input id="q" placeholder="Cerca un posto (musei, negozi, quartieri…)" autocomplete="off" aria-label="Cerca un posto"><div id="sr" hidden></div></div>
+<div class="chips" id="chips"></div><p class="t" id="placecount" style="margin:0 0 8px"></p>
+<div id="wrap"><div id="map" role="application" aria-label="Mappa geografica interattiva di Londra"></div>
+<div class="zb"><button id="zi" aria-label="Zoom avanti">+</button><button id="zo" aria-label="Zoom indietro">−</button><button id="zf" aria-label="Mostra il percorso del giorno" title="Mostra il percorso del giorno">◎</button><button id="za" aria-label="Tutta Londra" title="Tutta Londra">⤢</button></div>
+<div id="pop" hidden></div></div>
+<div class="legend t"><span><span style="color:var(--walk)">━</span> a piedi</span><span><span style="color:var(--metro)">╌</span> metro</span><span>Mappa reale con strade e quartieri · zoom e trascinamento · doppio clic su un punto vuoto per aggiungere una tappa.</span></div>
+<p class="t">Cartografia OpenStreetMap con strade, parchi e quartieri reali. I collegamenti del programma sono linee indicative tra le tappe: per il percorso stradale e i mezzi pubblici apri Google Maps.</p>
+</section>
+<section class="card" id="plan">
+<div class="ph"><h2 id="dtitle"></h2><div><button id="undo" title="Annulla l’ultima modifica">↶ Annulla</button> <button id="td" title="Mostra o nascondi le descrizioni">Descrizioni</button></div></div>
+<div class="row"><label>Partenza dall’hotel<input type="time" id="start"></label><label>Rientro entro<input type="time" id="end"></label><button id="meal">🍽️ Pausa pasto</button><button id="clr">Svuota giorno</button></div>
+<div id="list"></div><div class="tot" id="tot" hidden></div>
+<details><summary>Riepilogo da copiare e inviare</summary><textarea id="sum" readonly aria-label="Riepilogo"></textarea><button id="cp">Copia il testo</button> <span class="t" id="cps"></span></details>
+<p class="t" style="margin-top:14px">Orari di apertura indicativi: controllali sul sito ufficiale prima di andare. I tempi sono stimati dalla distanza (a piedi circa 4,8 km/h; metro 8 minuti di attesa più la corsa) e non includono code.</p>
+</section></main>
+<section class="tools" id="travelTools" aria-label="Strumenti del viaggio">
+ <article class="card wide" id="smartCard">
+  <div class="ph"><h2>🧭 Itinerario intelligente</h2><button class="toolbtn" id="smartSort">Ottimizza tappe</button></div>
+  <p class="muted">Riordina le tappe del giorno selezionato in base alla vicinanza geografica, partendo dall'hotel e tornando all'hotel. È un suggerimento basato sulla distanza in linea d'aria: controlla sempre tempi reali, orari e prenotazioni.</p>
+  <div id="smartResult" class="muted">Seleziona un giorno con almeno due tappe e premi «Ottimizza tappe».</div>
+ </article>
+ <article class="card" id="budgetCard">
+  <h2>💷 Budget e spese</h2>
+  <div class="toolrow"><label class="muted" style="flex:1">Budget totale (£)<input id="budgetTotal" type="number" min="0" step="0.01" placeholder="Es. 400"></label></div>
+  <div class="toolrow"><input id="expenseName" placeholder="Descrizione (es. pranzo)"><input id="expenseAmount" type="number" min="0" step="0.01" placeholder="£" style="max-width:90px"><select id="expenseWho" aria-label="Chi ha pagato"><option value="Comune">Insieme</option><option value="Io">Io</option><option value="Vera">Vera</option></select><button class="pri" id="addExpense">Aggiungi</button></div>
+  <div id="budgetSummary"></div><div id="expenseList"></div>
+  <p class="muted">Inserisci gli importi in sterline. Le spese restano salvate su questo dispositivo.</p>
+ </article>
+ <article class="card" id="nearCard">
+  <h2>🍔 Dove mangiare vicino</h2>
+  <label class="muted">Scegli un'attrazione<select id="nearPlace" style="display:block;width:100%;margin-top:4px"></select></label>
+  <div class="toolrow"><select id="nearType" aria-label="Tipo di locale"><option value="all">Tutti i locali</option><option value="fast">Fast food</option><option value="market">Mercati e food hall</option><option value="restaurant">Ristoranti e caffè</option></select><select id="nearRadius" aria-label="Raggio"><option value="800">Entro 800 m</option><option value="1500" selected>Entro 1,5 km</option><option value="3000">Entro 3 km</option></select></div>
+  <div id="nearResults" class="nearlist"></div>
+  <p class="muted">Distanze indicative in linea d'aria. Apri la scheda o Google Maps per verificare percorso e disponibilità.</p>
+ </article>
+ <article class="card" id="diaryCard">
+  <h2>📔 Diario privato</h2>
+  <div class="private-diary">
+   <div class="diary-profiles" role="tablist" aria-label="Profilo diario">
+    <button class="diary-profile active" data-profile="io" type="button">Io</button>
+    <button class="diary-profile" data-profile="lei" type="button">Lei</button>
+   </div>
+   <div id="diaryLock" class="diary-lock">
+    <p class="muted" id="diaryLockText">Scegli il tuo profilo e crea un PIN personale.</p>
+    <input id="diaryPin" type="password" inputmode="numeric" maxlength="12" autocomplete="current-password" placeholder="PIN personale">
+    <button class="pri" id="diaryUnlock" type="button">Sblocca</button>
+   </div>
+   <div id="diaryPrivate" hidden>
+    <label class="muted">Ricordi del giorno selezionato
+     <textarea id="privateDiaryText" placeholder="Cosa avete fatto? Il momento più bello, una frase da ricordare..."></textarea>
+    </label>
+    <div class="toolrow"><button class="pri" id="privateDiarySave" type="button">Salva ricordo</button><button id="privateDiaryLock" type="button">Blocca</button><span class="muted" id="privateDiaryStatus"></span></div>
+   </div>
+  </div>
+  <div hidden aria-hidden="true"><textarea id="diaryText"></textarea><button id="saveDiary"></button><span id="diaryStatus"></span></div>
+ </article>
+ <article class="card" id="weatherCard">
+  <h2>🌦️ Meteo e piano B</h2><p class="muted">Le previsioni affidabili per il 5–8 dicembre non sono ancora disponibili con così tanto anticipo. Controllale più vicino alla partenza.</p>
+  <div class="weatherlinks"><a class="toolbtn" target="_blank" rel="noopener" href="https://www.metoffice.gov.uk/weather/forecast/gcpvj0v07">Meteo Londra ↗</a><a class="toolbtn" target="_blank" rel="noopener" href="https://www.bbc.com/weather/2643743">BBC Weather ↗</a></div>
+  <h3>Se piove: alternative al coperto</h3><div class="muted">British Museum · National Gallery · Natural History Museum · Science Museum · V&A · Tate Modern · negozi di Covent Garden · Seven Dials Market.</div>
+  <h3>Piano B personale</h3><textarea id="planB" placeholder="Scrivi qui cosa fare in caso di pioggia, ritardi o attrazioni chiuse..."></textarea><button class="toolbtn" id="savePlanB">Salva piano B</button>
+ </article>
+ <article class="card" id="packingCard">
+  <h2>🧳 Checklist valigia</h2><div class="muted" id="packingProgress"></div><div class="checkgrid" id="packingList"></div>
+  <div class="toolrow"><input id="customPack" placeholder="Aggiungi un oggetto"><button class="toolbtn" id="addPack">Aggiungi</button><button class="toolbtn" id="resetPack">Azzera</button></div>
+ </article>
+ <article class="card" id="offlineCard">
+  <h2>📴 Modalità offline</h2><div id="offlineStatus" class="muted"></div>
+  <p class="muted">Il programma, le spese, le note e la checklist vengono salvati sul dispositivo e restano consultabili senza connessione. La cartografia, i link esterni e le previsioni meteo richiedono Internet.</p>
+  <div class="toolrow"><button class="pri" id="exportBackup">Esporta backup completo</button><label class="toolbtn" for="importBackup" style="cursor:pointer">Importa backup</label><input id="importBackup" type="file" accept="application/json" hidden></div>
+  <p class="muted">Per usare il sito offline, aprilo almeno una volta con Internet e conserva il file HTML sul telefono. Per una condivisione tra dispositivi, esporta il backup e invialo a Vera.</p>
+ </article>
+</section>
+<div id="toast" hidden></div>
+<style>
+.private-diary{margin-top:12px}.diary-profiles{display:flex;gap:6px;margin-bottom:10px}.diary-profile{flex:1;border-radius:12px;padding:9px;font-weight:700}.diary-profile.active{background:var(--pri);color:var(--prit);border-color:var(--pri)}.diary-lock{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}.diary-lock p{grid-column:1/-1;margin:0 0 2px}.diary-lock input{min-height:44px}.diary-lock button{min-height:44px}.private-diary textarea{min-height:190px;margin-top:6px}.private-diary .toolrow{align-items:center}.private-diary #privateDiaryLock{background:var(--chip)}
+</style>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+const K=69.5,R=111,W=800,H=600,$=id=>document.getElementById(id);
+const P={hotel:{n:"Z Hotel Holborn",la:51.5195,lo:-0.1205,d:0,e:"🏨",x:"Il vostro hotel, nella zona di Holborn e Bloomsbury: comodo per la metro (Holborn) e a pochi passi da Covent Garden e dal British Museum. Da qui parte e finisce ogni giornata."}};
+[["bb","Big Ben e Westminster",51.5007,-0.1246,20,"🕰️","Il simbolo di Londra: la torre dell’orologio sul Tamigi accanto al Parlamento. Di sera illuminata è bellissima, e dal ponte di Westminster si fanno le foto migliori."],
+["le","London Eye",51.5033,-0.1196,30,"🎡","Grande ruota panoramica sulla riva sud del Tamigi: un giro dura circa 30 minuti e si vede tutta la città. Biglietto a pagamento, meglio prenotare online."],
+["wa","Westminster Abbey",51.4993,-0.1273,30,"⛪","Chiesa storica dove si incoronano i reali e dove sono sepolti re e personaggi famosi. Anche solo da fuori è molto scenografica."],
+["bp","Buckingham Palace",51.5014,-0.1419,20,"👑","Residenza ufficiale del re. Si vede da fuori dai cancelli, con la grande piazza e il Victoria Memorial. Il cambio della guardia ha orari limitati, da controllare."],
+["tf","Trafalgar Square",51.5080,-0.1281,20,"🦁","Grande piazza con la colonna di Nelson, i leoni e le fontane. A Natale c’è un grande albero. Dietro c’è la National Gallery."],
+["ng","National Gallery",51.5089,-0.1283,60,"🖼️","Museo di pittura con capolavori di Van Gogh, Leonardo, Monet e molti altri. Ingresso gratuito alla collezione permanente."],
+["cg","Covent Garden",51.5118,-0.1226,40,"🛍️","Piazza con mercato coperto, negozi, artisti di strada e ristoranti. A dicembre è molto decorata ed è un posto ideale per passeggiare e mangiare."],
+["sd","Seven Dials",51.5137,-0.1272,10,"🏘️","Piccolo incrocio a sette strade vicino a Covent Garden, con negozi indipendenti, caffè e locali. Più tranquillo delle zone turistiche vicine."],
+["nY","Neal’s Yard",51.5144,-0.1267,15,"🎨","Cortile nascosto con case dai colori vivaci, caffè e negozi. Ottimo per una foto e una pausa."],
+["ls","Leicester Square",51.5103,-0.1281,15,"🎬","Piazza dei cinema e delle prime cinematografiche, piena di gente e di insegne luminose. Da qui si arriva a piedi a Soho e Chinatown."],
+["cn","Chinatown",51.5110,-0.1311,30,"🏮","Il quartiere cinese di Londra, con lanterne rosse, ristoranti e pasticcerie. Bello da vedere la sera, ottimo per cenare."],
+["sc","Scuffers (52 Brewer St)",51.5116,-0.1347,60,"👕","Negozio a Soho del marchio spagnolo di streetwear di moda su TikTok, dove cercate la felpa. Controllate gli orari di apertura sul loro Instagram."],
+["pc","Piccadilly Circus",51.5100,-0.1347,15,"💡","Incrocio con i grandi schermi luminosi e la fontana con la statua di Eros. Ritrovo classico a Londra, spettacolare di sera."],
+["ca","Carnaby Street",51.5131,-0.1380,30,"🧥","Via pedonale piena di negozi di moda e marchi giovani. A Natale ha decorazioni luminose sopra la strada."],
+["rs","Regent Street",51.5125,-0.1395,20,"✨","Via curva con edifici eleganti, negozi di grandi marchi e luci natalizie molto fotografate."],
+["oc","Oxford Circus",51.5152,-0.1415,10,"🚦","Incrocio fra Oxford Street e Regent Street con l’attraversamento diagonale. Punto di partenza per lo shopping."],
+["lb","Liberty",51.5143,-0.1407,30,"🧵","Storico grande magazzino in stile Tudor, famoso per i tessuti e i regali originali. Da vedere anche solo per l’interno."],
+["hm","Hamleys",51.5127,-0.1397,30,"🧸","Uno dei più grandi negozi di giocattoli al mondo, su più piani, con dimostrazioni. A Natale è molto affollato."],
+["ox","Oxford Street (Selfridges)",51.5144,-0.1527,40,"🛒","La via dello shopping per eccellenza, con Selfridges e centinaia di negozi. Di dicembre ha luci natalizie lungo tutta la strada."],
+["ma","Marble Arch",51.5131,-0.1589,10,"🏛️","Grande arco bianco in marmo all’angolo nord-est di Hyde Park, a fine Oxford Street."],
+["hp","Hyde Park",51.5073,-0.1657,40,"🌳","Il parco più grande del centro, con il lago Serpentine, i prati e i viali. Piacevole per una passeggiata a piedi."],
+["ww","Winter Wonderland (Hyde Park)",51.5072,-0.1657,90,"🎄","Mercatino di Natale con giostre, pista di pattinaggio e stand di cibo. Entrata di solito gratuita, le attrazioni si pagano. Date e orari vanno verificati."],
+["hc","Hyde Park Corner",51.5027,-0.1527,10,"🏟️","Grande rotonda con il Wellington Arch, al limite sud-est di Hyde Park."],
+["ha","Harrods",51.4994,-0.1633,60,"🛍️","Il grande magazzino di lusso più famoso di Londra, illuminato a Natale. Dentro ci sono food hall, regali e negozi."],
+["ah","Royal Albert Hall",51.5010,-0.1774,15,"🎭","Sala da concerti circolare in mattoni rossi, dall’aspetto molto particolare. Ottima da vedere anche da fuori."],
+["kp","Kensington Palace",51.5058,-0.1877,45,"🏰","Residenza reale nei Kensington Gardens, dove è vissuta la principessa Diana. Visita a pagamento."],
+["nh","Natural History Museum",51.4967,-0.1764,120,"🦖","Museo di storia naturale in un edificio bellissimo, con scheletri di dinosauro, balena e minerali. Ingresso gratuito, si può stare ore."],
+["sm","Science Museum",51.4978,-0.1745,120,"🚀","Museo della scienza con spazio, aerei, macchine storiche e sezioni interattive. Ingresso gratuito, di fronte al Natural History Museum."],
+["va","V&A Museum",51.4966,-0.1722,90,"🏺","Museo di arte, moda e design vicino agli altri due, molto bello anche da dentro. Ingresso gratuito."],
+["nt","Notting Hill (Portobello Rd)",51.5152,-0.2056,60,"🌈","Quartiere con le casette colorate e Portobello Road, famosa per il mercato dell’antiquariato e del cibo, soprattutto il sabato."],
+["pd","Paddington",51.5154,-0.1755,10,"🐻","Stazione storica, famosa per l’orsetto Paddington. Utile per treni verso ovest."],
+["mt","Madame Tussauds",51.5230,-0.1546,90,"🗿","Museo delle statue di cera di personaggi famosi. Biglietto costoso, meglio prenotare."],
+["sh","Sherlock Holmes Museum",51.5237,-0.1584,30,"🔍","Museo dedicato a Sherlock Holmes a Baker Street, nell’appartamento immaginario al numero 221b."],
+["rp","Regent’s Park",51.5273,-0.1527,45,"🌲","Grande parco reale con giardini, laghetto e il famoso zoo. Tranquillo per una passeggiata."],
+["ar","Abbey Road",51.5320,-0.1779,15,"🎸","Le strisce pedonali dell’album dei Beatles. Attenzione alle auto: i turisti ci fanno la foto di continuo."],
+["pr","Primrose Hill",51.5393,-0.1608,30,"🌇","Collina con vista sul centro di Londra, ideale per il tramonto."],
+["cm","Camden Market",51.5415,-0.1465,90,"🍜","Mercati con negozi alternativi, abbigliamento vintage e tante bancarelle di cibo di strada da tutto il mondo."],
+["kx","King’s Cross (Platform 9¾)",51.5322,-0.1240,20,"🚂","Stazione con il binario 9¾ di Harry Potter, dove si fa la foto con il carrello. A volte c’è la fila."],
+["bm","British Museum",51.5194,-0.1270,90,"🗝️","Museo di storia con la stele di Rosetta, mummie e i marmi del Partenone. Ingresso gratuito, vicinissimo all’hotel."],
+["sp","St Paul’s Cathedral",51.5138,-0.0984,45,"⛪","Grande cattedrale con la cupola famosa, simbolo della città. Visita a pagamento, bella anche da fuori."],
+["tm","Tate Modern",51.5076,-0.0994,90,"🖌️","Museo d’arte moderna e contemporanea in una ex centrale elettrica. Ingresso gratuito alla collezione."],
+["sb","Southbank",51.5055,-0.1160,30,"🎶","Passeggiata sulla riva sud del Tamigi con librerie all’aperto, artisti di strada e vista su Westminster. A Natale c’è un mercatino."],
+["bk","Borough Market",51.5055,-0.0910,45,"🥘","Il mercato del cibo più famoso di Londra, sotto i ponti. Ottimo per pranzare assaggiando di tutto."],
+["sg","Sky Garden",51.5112,-0.0836,45,"🌆","Giardino panoramico sul tetto di un grattacielo con vista gratuita sulla città. Serve prenotare online in anticipo."],
+["shd","The Shard",51.5045,-0.0865,60,"🔺","Il grattacielo più alto della città, con terrazza panoramica a pagamento."],
+["tl","Tower of London",51.5081,-0.0759,120,"🗡️","Fortezza storica con i gioielli della corona e le guardie. Visita a pagamento, serve almeno due ore."],
+["tb","Tower Bridge",51.5055,-0.0754,20,"🌉","Ponte levatoio famoso, con le torri gotiche. Si attraversa a piedi e si può salire sulle passerelle in alto."],
+["bl","Brick Lane",51.5215,-0.0716,45,"🥯","Via nell’East End con street art, locali indiani e bagel. Il mercato è più vivo la domenica."],
+["bx","Boxpark Shoreditch",51.5233,-0.0771,45,"📦","Centro commerciale fatto di container, con negozi di streetwear e street food."],
+["bps","Battersea Power Station",51.4818,-0.1445,60,"🏭","Storica centrale elettrica trasformata in centro commerciale e attrazione, con vista dall’alto a pagamento."],
+["vc","Victoria Station",51.4952,-0.1441,10,"🚉","Grande stazione ferroviaria e metro, vicina a Buckingham Palace."],
+["wt","Waterloo Station",51.5031,-0.1132,10,"🚉","Grande stazione sulla riva sud, vicina al London Eye."],
+["cw","Canary Wharf",51.5054,-0.0235,45,"🏙️","Quartiere finanziario con i grattacieli moderni e centri commerciali, molto diverso dal centro storico."],
+["gr","Greenwich (Cutty Sark)",51.4827,-0.0096,90,"⏱️","Quartiere sul fiume con il veliero Cutty Sark, il parco con il meridiano di Greenwich e il mercato. Vale mezza giornata."],
+["st","Westfield Stratford",51.5435,-0.0066,90,"🏬","Uno dei centri commerciali più grandi d’Europa, vicino al parco olimpico."],
+["lm","Leadenhall Market",51.5128,-0.0837,30,"🏛️","Galleria vittoriana coperta nella City, con una splendida struttura in ferro e vetro. Riconoscibile anche per le scene di Harry Potter."],
+["mo","Monument to the Great Fire",51.5101,-0.0860,20,"🗼","Colonna che ricorda il grande incendio di Londra del 1666, vicino al London Bridge."],
+["gh","Guildhall",51.5155,-0.0910,20,"🏰","Edificio storico della City, con una piazza suggestiva e un’architettura medievale."],
+["bc","Barbican Centre",51.5200,-0.0935,35,"🎭","Grande complesso culturale brutalista con teatro, cinema, giardini e spazi espositivi."],
+["smk","Shakespeare’s Globe",51.5081,-0.0972,35,"🎭","Ricostruzione del teatro elisabettiano legato a Shakespeare, sulla riva sud del Tamigi."],
+["hb","HMS Belfast",51.5067,-0.0810,60,"🚢","Nave da guerra storica trasformata in museo, ormeggiata sul Tamigi con vista sul Tower Bridge."],
+["ss","Somerset House",51.5107,-0.1170,35,"🏛️","Grande edificio neoclassico sul Tamigi, con cortile interno e mostre. In inverno ospita spesso una pista di pattinaggio."],
+["scg","St James’s Park",51.5024,-0.1340,35,"🦆","Parco reale tra Buckingham Palace e Westminster, famoso per il lago e gli uccelli."],
+["grd","Green Park",51.5067,-0.1435,25,"🌳","Parco reale tranquillo che collega Buckingham Palace a Piccadilly e Mayfair."],
+["hp2","Holland Park",51.5030,-0.2010,45,"🌿","Parco elegante con giardini, pavoni e il Kyoto Garden in stile giapponese."],
+["kg","Kew Gardens",51.4787,-0.2950,150,"🌺","Giardini botanici reali con serre storiche e collezioni di piante. È più lontano dal centro: considerate una mezza giornata."],
+["rw","Richmond Park",51.4420,-0.2730,90,"🦌","Enorme parco reale noto per i cervi e i paesaggi aperti. Fuori dal centro, da visitare con tempo a disposizione."],
+["hpv","Hampstead Heath",51.5600,-0.1650,60,"🌳","Grande area verde a nord di Londra, con sentieri e punti panoramici sulla città."],
+["hll","Hampstead Village",51.5550,-0.1780,40,"🏘️","Quartiere caratteristico con stradine, pub storici, negozi indipendenti e case eleganti."],
+["hg","Highgate Village",51.5710,-0.1450,35,"🏘️","Borgo nel nord di Londra con architettura storica e atmosfera tranquilla."],
+["lv","Little Venice",51.5230,-0.1820,30,"🛶","Canali e barche colorate nella zona di Paddington: una passeggiata diversa dal classico centro."],
+["mr","Marylebone High Street",51.5220,-0.1520,35,"🛍️","Via elegante con boutique, librerie, caffè e negozi indipendenti."],
+["fz","Fitzrovia",51.5190,-0.1370,35,"🏙️","Quartiere centrale tra Soho e Marylebone, con ristoranti, caffè e strade meno affollate."],
+["is","Islington e Angel",51.5350,-0.1030,45,"🏘️","Zona vivace con Upper Street, negozi, pub, ristoranti e il mercato di Camden Passage."],
+["cl","Clerkenwell",51.5220,-0.1030,35,"🏙️","Quartiere creativo con locali, architettura storica e piccoli ristoranti."],
+["spm","Spitalfields Market",51.5190,-0.0750,45,"🛍️","Mercato coperto con design, abbigliamento indipendente, oggetti vintage e street food."],
+["wp","Wapping e St Katharine Docks",51.5060,-0.0700,40,"⛵","Porticciolo storico con barche, ristoranti e magazzini riconvertiti, a est del Tower Bridge."],
+["bm2","Bermondsey Street",51.4980,-0.0830,35,"🍽️","Strada piena di ristoranti, gallerie e locali, non lontana dal Borough Market."],
+["dp","Deptford Market Yard",51.4780,-0.0260,40,"🎨","Piccola area creativa a sud-est, con negozi indipendenti, street food e spazi culturali."],
+["o2","The O2 Arena",51.5030,0.0032,60,"🎤","Grande arena per concerti ed eventi a Greenwich Peninsula. Controllate il calendario degli spettacoli."],
+["op","Queen Elizabeth Olympic Park",51.5430,-0.0120,60,"🏟️","Parco dei Giochi Olimpici del 2012, con impianti sportivi, percorsi pedonali e spazi verdi."],
+["ol","Old Royal Naval College",51.4827,-0.0055,45,"🏛️","Complesso monumentale di Greenwich, famoso per la Painted Hall e le scenografie sul fiume."],
+["grm","Greenwich Park",51.4769,0.0005,60,"🌳","Parco reale in collina con vista sul Tamigi e sulla città; ospita il meridiano di Greenwich."],
+["rm","Royal Observatory",51.4779,0.0015,45,"🧭","Osservatorio storico dove passa il meridiano zero. Visita a pagamento."],
+["el","Eltham Palace",51.4480,0.0520,75,"🏰","Palazzo storico che unisce ambienti medievali e Art Déco, nel sud-est di Londra."],
+["ab","Abbey Road Studios",51.5320,-0.1770,15,"🎵","Storici studi di registrazione dei Beatles. Si visita soprattutto dall’esterno: non è un museo aperto liberamente."],
+["ky","Kyoto Garden",51.5020,-0.2010,25,"🍁","Giardino giapponese all’interno di Holland Park, con laghetto, ponticello e cascate."],
+["pm","Pimlico",51.4890,-0.1350,35,"🏘️","Quartiere residenziale con eleganti edifici georgiani e strade tranquille a sud di Victoria."],
+["blg","Belgravia",51.4980,-0.1530,35,"🏘️","Quartiere raffinato con piazze verdi, facciate bianche e boutique."],
+["ch","Chelsea",51.4870,-0.1680,45,"🛍️","Zona elegante con King’s Road, negozi, caffè e strade residenziali caratteristiche."],
+["ful","Fulham Broadway",51.4800,-0.1950,30,"🏙️","Area vivace a ovest del centro, vicina allo stadio del Chelsea e a negozi e locali."],
+["hmr","Hammersmith Riverside",51.4880,-0.2290,30,"🌊","Passeggiata sul Tamigi nella zona di Hammersmith, con pub e ponti storici."],
+["mrd","Maida Vale",51.5290,-0.1850,30,"🏘️","Zona residenziale elegante con canali, case in stile vittoriano e viali alberati."],
+["bks","Baker Street",51.5226,-0.1571,20,"🚇","Strada legata a Sherlock Holmes, con la stazione decorata e il museo nelle vicinanze."],
+["tem","Temple Church",51.5135,-0.1110,30,"⛪","Chiesa medievale dei Templari, nascosta tra le corti legali della zona di Temple."],
+["mse","Museum of London Docklands",51.5076,-0.0238,75,"⚓","Museo gratuito sulla storia del porto e del Tamigi, a Canary Wharf."],
+["wst","Westminster Bridge",51.5008,-0.1218,10,"🌉","Ponte con una delle viste più riconoscibili su Big Ben, Parlamento e London Eye."],
+["jubi","Jubilee Gardens",51.5025,-0.1180,20,"🌷","Giardini sulla riva sud, accanto al London Eye, perfetti per una pausa e fotografie."],
+["ec","Euston Station",51.5282,-0.1337,10,"🚉","Grande stazione ferroviaria a nord di Bloomsbury, comoda per spostamenti fuori Londra."]].forEach(a=>P[a[0]]={n:a[1],la:a[2],lo:a[3],d:a[4],e:a[5],x:a[6]});
+// Locali dove mangiare: ristoranti, mercati e fast food.
+[['fd1','Dishoom Covent Garden',51.5136,-0.1267,75,'🍛','Cucina indiana in un locale caratteristico. Controllate le regole di prenotazione: alcuni orari sono walk-in.'],
+['fd2','Flat Iron Covent Garden',51.5129,-0.1229,60,'🥩','Steakhouse informale, famosa per il rapporto qualità-prezzo. Prenotazione online disponibile.'],
+['fd3','Honest Burgers Covent Garden',51.5128,-0.1235,50,'🍔','Hamburger in stile britannico con patatine al rosmarino. Accetta prenotazioni in alcune fasce e walk-in.'],
+['fd4','Heard Burger Covent Garden',51.5128,-0.1237,50,'🍔','Hamburger in zona Covent Garden; controllate disponibilità e orari sul sito ufficiale.'],
+['fd5','Padella Soho',51.5135,-0.1360,60,'🍝','Pasta fresca fatta al momento in Kingly Street. Prenotazioni online fino a poche settimane prima.'],
+['fd6','Five Guys Leicester Square',51.5107,-0.1306,35,'🍟','Fast food di hamburger personalizzabili e patatine. In genere non serve prenotare.'],
+['fd7','Shake Shack Leicester Square',51.5101,-0.1305,35,'🍔','Hamburger, hot dog e milkshake, comodo mentre visitate il West End.'],
+['fd8','Pizza Pilgrims Soho',51.5136,-0.1380,50,'🍕','Pizza napoletana in zona Kingly Street e Carnaby. Verificate sul sito la sede e la possibilità di prenotare.'],
+['fd9','Wagamama Brunswick Centre',51.5230,-0.1230,50,'🍜','Catena informale con ramen, noodles e piatti asiatici. Pratica vicino a Bloomsbury e all’hotel.'],
+['fd10','Pret A Manger Holborn',51.5177,-0.1190,20,'🥪','Panini, insalate, zuppe e caffè: soluzione rapida per colazione o pranzo.'],
+['fd11','Greggs Tottenham Court Road',51.5160,-0.1310,15,'🥐','Catena da forno britannica: sandwich, snack salati e prodotti da colazione.'],
+['fd12','McDonald’s Leicester Square',51.5104,-0.1301,25,'🍟','Opzione fast food veloce nel cuore del West End.'],
+['fd13','Borough Market – street food',51.5055,-0.0910,60,'🥙','Mercato gastronomico con bancarelle e specialità da diversi paesi.'],
+['fd14','Seven Dials Market',51.5140,-0.1260,60,'🍽️','Food hall coperta con diversi stand: ognuno può scegliere qualcosa di diverso.'],
+['fd15','Camden Market – street food',51.5415,-0.1465,60,'🌮','Grande scelta di street food internazionale, perfetto durante la visita a Camden.'],
+['fd16','Old Spitalfields Market – food',51.5190,-0.0750,50,'🥡','Mercato coperto con bancarelle di cibo, locali e posti per una pausa.'],
+['fd17','Chinatown – ristoranti e bakery',51.5110,-0.1311,60,'🥟','Zona piena di ristoranti cinesi, bubble tea e pasticcerie.'],
+['fd18','Market Halls Victoria',51.4940,-0.1430,50,'🍴','Food hall con più cucine e scelta informale, comoda se passate da Victoria.']].forEach(a=>P[a[0]]={n:a[1],la:a[2],lo:a[3],d:a[4],e:a[5],x:a[6],k:'Mangiare'});
+const CATL={Monumenti:"bb le wa bp tf sp tl tb kp ah shd sg ma hc bps lm mo gh smk hb ss tem ol rm el o2 ab",Musei:"sm nh va bm ng tm mt sh bc mse",Shopping:"sc ca rs oc lb hm ox ha st bx lm mr",Mercati:"bk cm bl nt cg spm dp",Parchi:"hp rp pr scg grd hp2 kg rw hpv grm ky jubi op",Natale:"ww",Quartieri:"sd nY ls cn sb cw gr ar kx fz is cl spm wp bm2 hll hg mr pm blg ch ful hmr mrd lv bks",Stazioni:"pd vc wt ec",Mangiare:"fd1 fd2 fd3 fd4 fd5 fd6 fd7 fd8 fd9 fd10 fd11 fd12 fd13 fd14 fd15 fd16 fd17 fd18"};
+const COL={Monumenti:"#d64545",Musei:"#7b5cd6",Shopping:"#e08a1e",Mercati:"#16a085",Parchi:"#3d9a4b",Natale:"#c2185b",Quartieri:"#2f7de1",Stazioni:"#6b7785",Mangiare:"#d97706",Hotel:"#0b5fa5",Altro:"#6b7785"};
+for(const c in CATL)CATL[c].split(" ").forEach(i=>{if(P[i])P[i].k=c});P.hotel.k="Hotel";Object.values(P).forEach(p=>{p.k=p.k||"Altro"});
+const SH={o:600,c:1200,k:"Negozi",ov:{1:[720,1080]}};
+const HR={sm:{o:600,c:1080,k:"Gratis"},nh:{o:600,c:1070,k:"Gratis"},va:{o:600,c:1065,k:"Gratis"},bm:{o:600,c:1020,k:"Gratis"},ng:{o:600,c:1080,k:"Gratis"},tm:{o:600,c:1080,k:"Gratis"},tl:{o:540,c:1050,k:"A pagamento",ov:{1:[600,1050],2:[600,1050]}},kp:{o:600,c:1080,k:"A pagamento (d’inverno può chiudere prima)"},sp:{o:510,c:990,k:"A pagamento",ov:{1:null}},wa:{o:570,c:930,k:"A pagamento",ov:{0:[540,900],1:null}},le:{o:660,c:1080,k:"A pagamento"},shd:{o:600,c:1320,k:"A pagamento"},sg:{o:600,c:1080,k:"Gratis, serve prenotare"},bk:{o:600,c:1020,k:"Ingresso libero",ov:{0:[540,1020],1:[600,960]}},cm:{o:600,c:1080,k:"Ingresso libero"},ha:{o:600,c:1260,k:"Negozio",ov:{1:[690,1080]}},ox:SH,lb:SH,hm:SH,ca:SH,rs:SH,sc:{...SH,k:"Negozio (controlla orari)"},st:{o:600,c:1320,k:"Centro commerciale",ov:{1:[720,1080]}},ww:{o:720,c:1320,k:"Ingresso libero, giostre a pagamento"},mt:{o:600,c:1020,k:"A pagamento"},hp:{k:"Ingresso libero"},rp:{k:"Ingresso libero"},tf:{k:"Gratis"},bl:{k:"Gratis (mercato soprattutto la domenica)"},nt:{k:"Gratis (mercato soprattutto il sabato)"}};
+const SUN=["15:54","15:53","15:52","15:52"];
 
-  <main>
-    <section class="page active" id="page-itinerario" data-page="itinerario">
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow"><span></span> 5—8 dicembre · Londra</p>
-          <h1>London,<br><em>for two.</em></h1>
-          <p class="hero-sub">Quattro giorni tra luci, musei e lunghe passeggiate. Tutto quello che serve, sempre a portata di mano.</p>
-        </div>
-        <div class="weather-card">
-          <div class="weather-icon" aria-hidden="true">◒</div>
-          <div><span>Base</span><strong>Z Hotel Holborn</strong></div>
-        </div>
-        <a class="start-button" href="#giorni"><span>Apri il piano</span><span aria-hidden="true">↓</span></a>
-      </section>
+const DN=["Sab 5 dic","Dom 6 dic","Lun 7 dic","Mar 8 dic"],DL=[["Sab","5"],["Dom","6"],["Lun","7"],["Mar","8"]],ST=["15:00","09:30","09:30","09:00"];
+const g=a=>a.map(p=>[p[1]*K,-p[0]*R]);
+const thames=g([[51.4881,-0.2307],[51.4668,-0.2131],[51.4650,-0.1880],[51.4818,-0.1707],[51.4820,-0.1667],[51.4850,-0.1494],[51.4871,-0.1268],[51.4948,-0.1219],[51.5009,-0.1218],[51.5073,-0.1198],[51.5086,-0.1169],[51.5107,-0.1042],[51.5085,-0.0945],[51.5079,-0.0877],[51.5055,-0.0754],[51.5040,-0.0550],[51.5075,-0.0330],[51.4930,-0.0250],[51.4850,-0.0180],[51.4850,-0.0100],[51.4990,0.0060],[51.5050,0.0050]]);
+const parks=[[[51.5030,-0.1925],[51.5115,-0.1925],[51.5135,-0.1780],[51.5135,-0.1600],[51.5120,-0.1560],[51.5075,-0.1500],[51.5035,-0.1520],[51.5020,-0.1560],[51.5020,-0.1750]],[[51.5215,-0.1640],[51.5260,-0.1680],[51.5335,-0.1620],[51.5345,-0.1500],[51.5320,-0.1450],[51.5240,-0.1470],[51.5205,-0.1520]],[[51.5030,-0.1420],[51.5050,-0.1340],[51.5045,-0.1260],[51.5010,-0.1265],[51.5010,-0.1390]],[[51.5070,-0.1470],[51.5070,-0.1395],[51.5020,-0.1405],[51.5030,-0.1480]],[[51.4800,-0.1700],[51.4830,-0.1650],[51.4830,-0.1480],[51.4780,-0.1490],[51.4775,-0.1640]]].map(g);
+const roads=[[[51.5131,-0.1589],[51.5152,-0.1415],[51.5165,-0.1308]],[[51.5152,-0.1415],[51.5100,-0.1347]],[[51.5027,-0.1527],[51.5100,-0.1347]],[[51.5069,-0.1280],[51.5014,-0.1419]],[[51.5081,-0.1248],[51.5127,-0.1180],[51.5138,-0.1040]],[[51.5080,-0.1281],[51.5007,-0.1246]],[[51.5215,-0.1630],[51.5238,-0.1439],[51.5265,-0.1331],[51.5303,-0.1222]],[[51.5131,-0.1589],[51.5027,-0.1527]],[[51.5085,-0.1272],[51.5165,-0.1308]],[[51.5100,-0.1347],[51.5150,-0.1275]],[[51.5127,-0.1180],[51.5190,-0.1200],[51.5230,-0.1230]],[[51.5165,-0.1308],[51.5174,-0.1200],[51.5171,-0.1090]],[[51.5131,-0.1589],[51.5120,-0.1780],[51.5090,-0.1960]],[[51.5027,-0.1527],[51.4994,-0.1633],[51.4960,-0.1700]]].map(g);
+const labels=[["Soho",51.5135,-0.1340],["Westminster",51.4985,-0.1330],["City",51.5135,-0.0900],["Camden",51.5370,-0.1420],["Kensington",51.4990,-0.1920],["Shoreditch",51.5250,-0.0800],["Notting Hill",51.5110,-0.2000],["Bloomsbury",51.5230,-0.1250],["Mayfair",51.5105,-0.1480],["Southwark",51.5000,-0.0950],["Chelsea",51.4870,-0.1700],["Greenwich",51.4780,-0.0080],["Tamigi",51.4950,-0.1180],["Wembley",51.5560,-0.2796],["Richmond",51.4420,-0.2730],["Kew",51.4787,-0.2950],["Wimbledon",51.4340,-0.2140],["Hampstead",51.5600,-0.1650],["Islington",51.5350,-0.1030],["Canary Wharf",51.5054,-0.0235],["Olympic Park",51.5430,-0.0120]].map(a=>[a[0],a[2]*K,-a[1]*R]);
+let S={cn:0,cu:{},days:ST.map(s=>({s,e:"",r:[],d:{},m:{},n:{}}))},di=0,sel=null,hov=null,cat=null,showDesc=true,hist=[],prev="",last="",V={x:-0.125*K,y:-51.512*R,s:220};
+const D=()=>S.days[di],dw=id=>D().d[id]??P[id].d,md=k=>D().m[k]||"walk";
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sx=x=>(x-V.x)*V.s+W/2,sy=y=>(y-V.y)*V.s+H/2,pt=p=>sx(p[0]).toFixed(1)+","+sy(p[1]).toFixed(1),pk=p=>[p.lo*K,-p.la*R];
+const fmt=t=>{t=Math.round(t)%1440;return String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0")};
+const tmin=s=>{const a=(s||"").split(":");return a.length<2?null:+a[0]*60+ +a[1]};
+const km=d=>(d*1.25/1000).toFixed(1).replace(".",",")+" km";
+function dist(a,b){const r=Math.PI/180,x=(b.lo-a.lo)*r*Math.cos((a.la+b.la)/2*r),y=(b.la-a.la)*r;return Math.hypot(x,y)*6371000}
+function leg(a,b,m){const d=dist(a,b);return m==="metro"?{min:8+d*1.2/500,d}:{min:d*1.25/80,d}}
+const gm=p=>`https://www.google.com/maps/search/?api=1&query=${p.la},${p.lo}`,ph=p=>`https://www.google.com/search?tbm=isch&q=${encodeURIComponent(p.n.split(" (")[0]+" London")}`;
+// Collegamenti ufficiali per biglietti e locali; per gli altri luoghi viene proposta una ricerca mirata.
+const OFFICIAL={bb:'https://www.parliament.uk/visiting/',le:'https://www.londoneye.com/tickets-and-prices/',wa:'https://www.westminster-abbey.org/visit-us',kp:'https://www.hrp.org.uk/kensington-palace/visit/',nh:'https://www.nhm.ac.uk/visit.html',sm:'https://www.sciencemuseum.org.uk/visit',va:'https://www.vam.ac.uk/visit',mt:'https://www.madametussauds.com/london/',sp:'https://www.stpauls.co.uk/visit',tl:'https://www.hrp.org.uk/tower-of-london/visit/',tb:'https://www.towerbridge.org.uk/your-visit',shd:'https://www.the-shard.com/viewing-gallery/',sg:'https://skygarden.london/booking/',rm:'https://www.rmg.co.uk/royal-observatory',el:'https://www.english-heritage.org.uk/visit/places/eltham-palace-and-gardens/',o2:'https://www.theo2.co.uk/events',ol:'https://ornc.org/visit/',mse:'https://www.museumoflondon.org.uk/museum-london-docklands/visit',ww:'https://hydeparkwinterwonderland.com/',fd1:'https://www.dishoom.com/covent-garden/',fd2:'https://www.flatironsteak.co.uk/restaurants/',fd3:'https://honestburgers.co.uk/locations/covent-garden/',fd4:'https://heardburger.co.uk/bookings',fd5:'https://www.padella.co/soho/',fd6:'https://fiveguys.co.uk/',fd7:'https://www.shakeshack.co.uk/',fd8:'https://pizzapilgrims.co.uk/',fd9:'https://www.wagamama.com/',fd10:'https://www.pret.co.uk/',fd11:'https://www.greggs.co.uk/',fd12:'https://www.mcdonalds.com/gb/en-gb.html',fd13:'https://boroughmarket.org.uk/',fd14:'https://www.sevendialsmarket.com/',fd15:'https://www.camdenmarket.com/',fd16:'https://oldspitalfieldsmarket.com/',fd17:'https://www.visitlondon.com/things-to-do/place/281041-chinatown',fd18:'https://markethalls.co.uk/'};
+function bookingLink(id,p){return OFFICIAL[id]||`https://www.google.com/search?q=${encodeURIComponent((p.k==='Mangiare'?'official website menu booking ':'official tickets booking ')+p.n+' London')}`;}
+function bookingText(id,p){return p.k==='Mangiare'?'🍽️ Sito / menu / prenota':(OFFICIAL[id]?'🎟️ Biglietti / prenota':'🔎 Info e prenotazioni');}
+function bd(id,a,dep){const h=HR[id];if(!h)return"";let o=h.o,c=h.c,out=`<span class="badge">${esc(h.k)}</span>`;const ov=h.ov&&h.ov[di];if(ov===null)return out+`<span class="badge w">⚠️ Chiuso a visite in questo giorno</span>`;if(ov){o=ov[0];c=ov[1]}if(o==null)return out;
+if(a>=c)out+=`<span class="badge w">⚠️ Arrivi alle ${fmt(a)} ma chiude alle ${fmt(c)}</span>`;else if(dep>c)out+=`<span class="badge w">⚠️ Chiude alle ${fmt(c)}: la sosta finisce alle ${fmt(dep)}</span>`;else if(a<o)out+=`<span class="badge w">ℹ️ Apre alle ${fmt(o)}, arrivi alle ${fmt(a)}</span>`;else out+=`<span class="badge ok">✅ Aperto (${fmt(o)}–${fmt(c)}, indicativo)</span>`;return out}
+function legs(){const r=D().r;return r.length?r.map(k=>md(k)).concat([md("end")]):[]}
+let geoMap=null,markerLayer=null,routeLayer=null;
+const hotelLL=[P.hotel.la,P.hotel.lo];
+function fitAll(){if(!geoMap)return;const pts=Object.values(P).map(p=>[p.la,p.lo]);geoMap.fitBounds(pts,{padding:[28,28],maxZoom:12});}
+function fit(){if(!geoMap)return;const ids=D().r,pts=[hotelLL,...ids.map(k=>[P[k].la,P[k].lo]),hotelLL];if(ids.length)geoMap.fitBounds(pts,{padding:[55,55],maxZoom:14});else geoMap.setView(hotelLL,13);}
+function iconFor(id){const p=P[id],isHotel=id==='hotel',inRoute=D().r.includes(id),selected=sel===id;const label=isHotel?'🏨':inRoute?String(D().r.indexOf(id)+1):p.e;const cls='pin '+(isHotel?'hotel':inRoute?'poi':'other')+(selected?' selected':'');const bg=isHotel?'#0b5fa5':inRoute?'#0f2747':(COL[p.k]||'#687789');return L.divIcon({className:'',html:`<div class="${cls}" style="background:${bg}">${label}</div>`,iconSize:isHotel?[38,38]:[30,30],iconAnchor:isHotel?[19,19]:[15,15]});}
+function draw(){if(!geoMap)return;markerLayer.clearLayers();routeLayer.clearLayers();const ids=D().r;
+Object.keys(P).forEach(id=>{if(id!=='hotel'&&cat&&P[id].k!==cat&&sel!==id)return;const p=P[id],m=L.marker([p.la,p.lo],{icon:iconFor(id),keyboard:true,title:p.n}).addTo(markerLayer);m.on('click',()=>select(id,false));});
+if(ids.length){const pts=['hotel',...ids,'hotel'];for(let i=0;i<pts.length-1;i++){const a=P[pts[i]],b=P[pts[i+1]],mode=i===ids.length?'walk':md(pts[i+1]);L.polyline([[a.la,a.lo],[b.la,b.lo]],{color:mode==='metro'?'#0b5fa5':'#c8102e',weight:4,opacity:.85,dashArray:mode==='metro'?'9 8':null}).addTo(routeLayer);}}
+}
+function pop(){const el=$("pop");if(!sel){el.hidden=true;return}const p=P[sel],inr=D().r.includes(sel),h=HR[sel];el.hidden=false;
+el.innerHTML=`<button class="x" data-c="1" aria-label="Chiudi">✕</button><div class="pt"><span class="pe" style="background:${COL[p.k]}22">${p.e}</span><div><b>${esc(p.n)}</b><div class="t">${p.k}${h&&h.k?" · "+esc(h.k):""}</div></div></div><p>${esc(p.x)}</p><div class="pa">${sel==="hotel"?"":inr?`<button data-rm="${sel}">Rimuovi da ${DN[di]}</button>`:`<button class="pri" data-add="${sel}">+ Aggiungi a ${DN[di]}</button>`}<a class="t" target="_blank" rel="noopener" href="${bookingLink(sel,p)}">${bookingText(sel,p)} ↗</a><a class="t" target="_blank" rel="noopener" href="${ph(p)}">Foto ↗</a><a class="t" target="_blank" rel="noopener" href="${gm(p)}">Google Maps ↗</a></div>`}
+function planHtml(){const ids=D().r;let t=(tmin(D().s)||0),wk=0,mt=0,sh="";
+if(!ids.length){$("tot").hidden=true;return`<div class="empty">🗺️<p><b>Nessuna tappa per ${DN[di]}</b></p><p class="t">Cerca un posto o tocca un punto sulla mappa, poi premi «Aggiungi».</p></div>`}
+const legH=(id,prevN,A,B)=>{const m=md(id),lw=leg(A,B,"walk"),lm=leg(A,B,"metro");m==="metro"?mt+=lm.min:wk+=lw.min;t+=(m==="metro"?lm:lw).min;return`<div class="leg"><div class="sg"><button class="${m==="walk"?"on":""}" data-ms="${id}|walk">🚶 ${Math.round(lw.min)} min</button><button class="${m==="metro"?"on":""}" data-ms="${id}|metro">🚇 ${Math.round(lm.min)} min</button></div><span class="t">${km(lw.d)} · da ${esc(prevN)}</span></div>`};
+ids.forEach((id,i)=>{const pr=i?P[ids[i-1]]:P.hotel,p=P[id];sh+=legH(id,pr.n.split(" (")[0],pr,p);const a=t,dep=a+dw(id);t=dep;
+const nm=/^c\d+$/.test(id)?`<input value="${esc(p.n)}" data-n="${id}" aria-label="Nome del punto">`:`${p.e} ${esc(p.n)}`;
+sh+=`<article class="stop${hov===id?" hv":""}" data-i="${i}" data-id="${id}" style="--c:${COL[p.k]}"><div class="sh"><div class="num">${i+1}</div><div><div class="name">${nm}</div><div class="meta">🕒 ${fmt(a)} → ${fmt(dep)}</div></div><div class="ctl"><span class="grip" draggable="true" title="Trascina per riordinare">⠿</span><button data-u="${i}" aria-label="Sposta su">↑</button><button data-w="${i}" aria-label="Sposta giù">↓</button><button data-x="${i}" aria-label="Rimuovi">✕</button></div></div>
+${showDesc?`<p class="desc">${esc(p.x)}</p>`:""}<div>${bd(id,a,dep)}</div><div class="row" style="margin:8px 0 0"><div class="dw"><button data-sd="${id}|-10" aria-label="Meno tempo">−</button><span>${dw(id)} min</span><button data-sd="${id}|10" aria-label="Più tempo">+</button></div></div><input class="note" placeholder="Nota (es. prenotato alle 17:00)" value="${esc(D().n[id]||"")}" data-o="${id}"><div class="lk"><a target="_blank" rel="noopener" href="${ph(p)}">📷 Vedi foto</a><a target="_blank" rel="noopener" href="${gm(p)}">📍 Google Maps</a><a target="_blank" rel="noopener" href="${bookingLink(id,p)}">${bookingText(id,p)} ↗</a></div></article>`});
+sh+=legH("end","",P[ids[ids.length-1]],P.hotel).replace("· da ","· ritorno in hotel").replace(/ritorno in hotel\s*</,"ritorno in hotel<");
+const dl=tmin(D().e),late=dl!=null&&t>dl&&t<1440,route=["hotel",...ids,"hotel"].map(k=>P[k].la+","+P[k].lo).join("/");
+$("tot").hidden=false;$("tot").innerHTML=`<b>🏨 Rientro in hotel alle ${fmt(t)}</b>${late?` <span class="badge w">⚠️ Dopo le ${D().e}</span>`:""}${t>=1440?` <span class="badge w">⚠️ Dopo mezzanotte</span>`:""}<div class="t">A piedi ${Math.round(wk)} min · Metro ${Math.round(mt)} min · ${ids.length} tappe</div><div style="margin-top:6px"><a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/${route}">Apri tutto il giorno in Google Maps ↗</a></div>`;return sh}
+function summary(){let o="Londra 5-8 dicembre – Z Hotel Holborn\n";const keep=di;S.days.forEach((d,i)=>{di=i;o+=`\n${DN[i]}\n`;if(!d.r.length){o+="  (da pianificare)\n";return}let t=tmin(d.s)||0;o+=`  ${fmt(t)} Partenza dall’hotel\n`;d.r.forEach((id,k)=>{const l=leg(P[k?d.r[k-1]:"hotel"],P[id],md(id)),a=t+l.min;t=a+dw(id);o+=`  ${fmt(a)} ${P[id].n}${d.n[id]?" ("+d.n[id]+")":""}\n`});const l=leg(P[d.r[d.r.length-1]],P.hotel,md("end"));o+=`  ${fmt(t+l.min)} Rientro in hotel\n`});di=keep;return o}
+const EXTRA_KEY='londra-extra-v1';
+const PACK_DEFAULT=['Documenti e carte','Telefono','Caricabatterie','Power bank','Adattatore presa UK','Auricolari','Medicine personali','Spazzolino e dentifricio','Cambio per ogni giorno','Felpa e maglia pesante','Giacca impermeabile','Scarpe comode','Pigiama','Intimo e calze','Beauty e prodotti personali','Biglietti e prenotazioni'];
+let X={budget:'',expenses:[],diary:{},planB:'',packing:PACK_DEFAULT.map((t,i)=>({t,done:false,id:'p'+i})),customPacking:[]};
 
-      <section class="overview" aria-label="Riepilogo viaggio">
-        <article><strong>4</strong><span>giorni</span></article>
-        <article><strong>6</strong><span>zone da scoprire</span></article>
-        <article><strong>2</strong><span>cuori a Londra</span></article>
-      </section>
+function render(){
+$("tabs").innerHTML=DN.map((n,i)=>`<button class="tab" role="tab" data-t="${i}" aria-selected="${i===di}">${DL[i][0]} <b>${DL[i][1]}</b> dic<small>${S.days[i].r.length?S.days[i].r.length+" tappe":"da pianificare"}</small></button>`).join("");
+$("sun").textContent="🌇 Tramonto verso le "+SUN[di]+": dopo quell’ora le luci natalizie si vedono al meglio.";
+$("dtitle").textContent=DN[di];$("start").value=D().s;$("end").value=D().e||"";
+$("chips").innerHTML=Object.keys(CATL).map(c=>`<button class="chip" data-ch="${c}" aria-pressed="${cat===c}"><span style="color:${COL[c]}">●</span> ${c}</button>`).join("");$("placecount").textContent=Object.keys(P).length-1+" luoghi disponibili · "+(cat||"Tutte le categorie");
+$("undo").disabled=!hist.length;$("undo").style.opacity=hist.length?1:.45;$("td").textContent=showDesc?"Nascondi descrizioni":"Mostra descrizioni";
+$("list").innerHTML=planHtml();$("sum").value=summary();draw();pop();if(typeof renderDiary==="function")renderDiary()}
+function sres(){const q=$("q").value.trim().toLowerCase(),el=$("sr");if(!q){el.hidden=true;return}const r=Object.keys(P).filter(k=>k!=="hotel"&&P[k].n.toLowerCase().includes(q)&&(!cat||P[k].k===cat)).slice(0,8);el.hidden=false;el.innerHTML=r.map(k=>`<button data-s="${k}">${P[k].e} <b>${esc(P[k].n)}</b> <span class="t">${P[k].k}${D().r.includes(k)?" · già nel programma":""}</span></button>`).join("")||`<p class="t" style="padding:10px">Nessun risultato.</p>`}
+let db=null,ref=null,tm=0;
+function hydrate(){for(const k of Object.keys(P))if(/^c\d+$/.test(k)&&!S.cu[k])delete P[k];for(const k in S.cu){P[k]=S.cu[k];P[k].k=P[k].k||"Altro"}}
+function save(){const j=JSON.stringify(S);last=j;try{localStorage.setItem("londra-plan",j)}catch(e){}clearTimeout(tm);tm=setTimeout(async()=>{if(!ref)return;try{await ref.set({json:j});sync("☁️ Condiviso")}catch(e){sync("💾 Solo su questo dispositivo")}},600)}
+const sync=t=>{$("sync").textContent=t||""};
+function load(j){try{const o=JSON.parse(j);if(!o||!Array.isArray(o.days)||o.days.length!==4)return false;S=o;S.cu=S.cu||{};S.cn=S.cn||0;S.days.forEach(d=>{d.r=(d.r||[]).filter(k=>P[k]||S.cu[k]);d.d=d.d||{};d.m=d.m||{};d.n=d.n||{};d.e=d.e||""});hydrate();last=j;prev=j;return true}catch(e){return false}}
+function upd(){hist.push(prev);if(hist.length>40)hist.shift();prev=JSON.stringify(S);save();render()}
+function undo(){if(!hist.length)return;load(hist.pop());last="";prev=JSON.stringify(S);save();render()}
+let tt=0;function toast(m,u){const el=$("toast");el.innerHTML=`<span>${esc(m)}</span>${u?'<button data-undo="1">Annulla</button>':""}`;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,5000)}
+function cps(t){$("cps").textContent=t}
+function toLL(X,Y){return{la:-((Y-H/2)/V.s+V.y)/R,lo:((X-W/2)/V.s+V.x)/K}}
+function loc(e){const r=$("map").getBoundingClientRect();return[(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]}
+function zoom(f,X=W/2,Y=H/2){const wx=(X-W/2)/V.s+V.x,wy=(Y-H/2)/V.s+V.y;V.s=Math.min(2500,Math.max(25,V.s*f));V.x=wx-(X-W/2)/V.s;V.y=wy-(Y-H/2)/V.s;draw()}
+function select(id,center){sel=id;if(center&&geoMap)geoMap.setView([P[id].la,P[id].lo],Math.max(geoMap.getZoom(),15));draw();pop()}
+function addTo(id){const r=D().r;if(r.includes(id)){toast("È già nel programma di "+DN[di]);return}r.push(id);fit();upd();toast(`Aggiunto a ${DN[di]}: ${P[id].n.split(" (")[0]}`,1)}
+function newPointLL(ll){const c=++S.cn,id="c"+c;P[id]=S.cu[id]={n:"Punto personale "+(Object.values(S.cu).filter(q=>q.e==="📍").length+1),la:ll.lat,lo:ll.lng,d:20,e:"📍",k:"Altro",x:"Punto scelto da te sulla mappa. Puoi rinominarlo nell’elenco del programma."};D().r.push(id);sel=null;upd();toast("Punto creato e aggiunto al programma",1)}
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b){if(!e.target.closest("#sr,#q"))$("sr").hidden=true;return}const d=b.dataset,r=D().r;
+if(d.undo){undo();$("toast").hidden=true;return}
+if(d.t!==undefined){di=+d.t;sel=null;fit();return render()}
+if(d.v){$("mapsec").parentElement.dataset.v=d.v;document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.v===d.v));return}
+if(d.ch){cat=cat===d.ch?null:d.ch;render();return sres()}
+if(d.s){$("q").value="";$("sr").hidden=true;$("mapsec").parentElement.dataset.v="map";document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.v==="map"));return select(d.s,1)}
+if(d.c){sel=null;draw();return pop()}
+if(d.add)return addTo(d.add);
+if(d.rm){const i=r.indexOf(d.rm);if(i>=0)r.splice(i,1);sel=null;return upd()}
+if(d.ms){const[k,m]=d.ms.split("|");D().m[k]=m}
+else if(d.sd){const[k,n]=d.sd.split("|");D().d[k]=Math.max(0,dw(k)+ +n)}
+else if(d.u!==undefined){const i=+d.u;if(i>0)[r[i-1],r[i]]=[r[i],r[i-1]]}
+else if(d.w!==undefined){const i=+d.w;if(i<r.length-1)[r[i+1],r[i]]=[r[i],r[i+1]]}
+else if(d.x!==undefined)r.splice(+d.x,1);
+else if(b.id==="undo")return undo();
+else if(b.id==="td"){showDesc=!showDesc;return render()}
+else if(b.id==="meal"){const l=r.length?P[r[r.length-1]]:P.hotel,id="c"+(++S.cn);P[id]=S.cu[id]={n:"Pausa pasto",la:l.la,lo:l.lo,d:45,e:"🍽️",k:"Mercati",x:"Pausa per mangiare: pranzo, cena o un fast food al volo. Si trova nel punto della tappa precedente, quindi non aggiunge spostamenti. Rinominala con il posto che sceglierete."};r.push(id)}
+else if(b.id==="clr"){if(!r.length||!confirm("Svuotare le tappe di "+DN[di]+"?"))return;D().r=[];D().d={};D().m={};D().n={}}
+else if(b.id==="cp"){const t=$("sum");t.select();try{navigator.clipboard.writeText(t.value).then(()=>cps("Copiato"),()=>cps("Seleziona il testo e copialo a mano"))}catch(x){cps("Seleziona il testo e copialo a mano")}return}
+else if(b.id==="zf"){fit();return draw()}else if(b.id==="zi"){geoMap&&geoMap.zoomIn();return} else if(b.id==="zo"){geoMap&&geoMap.zoomOut();return} else if(b.id==="za"){return fitAll()}
+else return;upd()});
+document.addEventListener("change",e=>{const t=e.target;if(t.dataset.n){P[t.dataset.n].n=t.value||"Punto";S.cu[t.dataset.n].n=P[t.dataset.n].n}else if(t.id==="start")D().s=t.value||D().s;else if(t.id==="end")D().e=t.value||"";else if(t.dataset.o)D().n[t.dataset.o]=t.value;else return;upd()});
+$("q").addEventListener("input",sres);$("q").addEventListener("focus",sres);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){sel=null;$("sr").hidden=true;draw();pop()}if((e.key==="Enter"||e.key===" ")&&e.target.dataset&&e.target.dataset.p&&e.target.tagName==="g"){e.preventDefault();select(e.target.dataset.p)}});
+let dragI=null;
+document.addEventListener("dragstart",e=>{const gp=e.target.closest&&e.target.closest(".grip");if(!gp)return;const s=gp.closest(".stop");dragI=+s.dataset.i;try{e.dataTransfer.setData("text/plain","x");e.dataTransfer.setDragImage(s,10,10)}catch(x){}});
+document.addEventListener("dragover",e=>{if(dragI!==null)e.preventDefault()});
+document.addEventListener("drop",e=>{const s=e.target.closest&&e.target.closest(".stop");if(s&&dragI!==null){e.preventDefault();const j=+s.dataset.i,r=D().r;if(j!==dragI){const[x]=r.splice(dragI,1);r.splice(j,0,x);dragI=null;upd()}}dragI=null});
+document.addEventListener("dragend",()=>{dragI=null});
+document.addEventListener("mouseover",e=>{const s=e.target.closest&&e.target.closest(".stop"),id=s?s.dataset.id:null;if(id!==hov){hov=id;draw()}});
+if(typeof L!=='undefined'){
+// Mappa geografica reale: cartografia stradale, con un secondo fornitore di riserva.
+geoMap=L.map('map',{scrollWheelZoom:true,doubleClickZoom:false,preferCanvas:true}).setView([51.512,-0.125],12);
+const tileAttribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors';
+let activeTiles=null,backupTried=false,tileErrors=0;
+function useTiles(url,opts){if(activeTiles)geoMap.removeLayer(activeTiles);activeTiles=L.tileLayer(url,opts).addTo(geoMap);tileErrors=0;}
+// Voyager mostra bene strade, parchi, acqua e nomi dei quartieri.
+useTiles('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19,attribution:tileAttribution+' &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'});
+activeTiles.on('tileerror',()=>{tileErrors++;if(tileErrors>=4&&!backupTried){backupTried=true;useTiles('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:tileAttribution});}});
+markerLayer=L.layerGroup().addTo(geoMap);routeLayer=L.layerGroup().addTo(geoMap);
+geoMap.on('dblclick',e=>newPointLL(e.latlng));
+geoMap.whenReady(()=>setTimeout(()=>geoMap.invalidateSize(true),250));
+window.addEventListener('resize',()=>geoMap.invalidateSize());
+}else{const mapEl=document.getElementById('map');if(mapEl)mapEl.innerHTML='<div style="padding:22px;text-align:center;color:#536273">🗺️ Mappa non disponibile offline. Il programma, le spese, il diario e la checklist restano utilizzabili.</div>'; }
+try{const j=localStorage.getItem("londra-plan");if(j)load(j)}catch(e){}
+prev=JSON.stringify(S);fit();render();
+(async()=>{sync("💾 Solo su questo dispositivo");try{if(typeof claude!=="undefined")db=await claude.use("db")}catch(e){}if(!db)return;ref=db.doc("plan/main");
+ref.onSnapshot(s=>{const o=s.exists&&s.data();if(o&&o.json&&o.json!==last){if(load(o.json)){render();sync("☁️ Condiviso · aggiornato")}}else sync("☁️ Condiviso")},()=>sync("💾 Condivisione non disponibile"))})();
 
-      <section class="days" id="giorni">
-        <div class="section-heading">
-          <p class="eyebrow">Il piano</p>
-          <h2>Ogni giorno,<br><em>la sua storia.</em></h2>
-        </div>
-        <div class="day-tabs" role="tablist" aria-label="Seleziona il giorno">
-          <button class="active" role="tab" aria-selected="true" data-day="0"><span>05</span>Sabato</button>
-          <button role="tab" aria-selected="false" data-day="1"><span>06</span>Domenica</button>
-          <button role="tab" aria-selected="false" data-day="2"><span>07</span>Lunedì</button>
-          <button role="tab" aria-selected="false" data-day="3"><span>08</span>Martedì</button>
-        </div>
-        <aside class="next-card" id="nextCard" aria-label="Prossima tappa"></aside>
-        <div class="route-map" id="routeMap" aria-label="Percorso del giorno"></div>
-        <div id="itinerary"></div>
-      </section>
-    </section>
+// --- Strumenti aggiuntivi: budget, diario, ristoranti, checklist e backup ---
+function loadExtra(){try{const z=JSON.parse(localStorage.getItem(EXTRA_KEY)||'null');if(z&&typeof z==='object')X={...X,...z}}catch(e){};X.expenses=X.expenses||[];X.diary=X.diary||{};X.packing=X.packing||PACK_DEFAULT.map((t,i)=>({t,done:false,id:'p'+i}));X.customPacking=X.customPacking||[]}
+function saveExtra(){try{localStorage.setItem(EXTRA_KEY,JSON.stringify(X));$('offlineStatus').textContent='✓ Dati salvati su questo dispositivo · '+(navigator.onLine?'connessione disponibile':'offline')}catch(e){$('offlineStatus').textContent='Spazio di salvataggio non disponibile: esporta un backup.'}}
+const money=n=>'£'+Number(n||0).toFixed(2);
+function renderBudget(){const total=Number(X.budget)||0,spent=X.expenses.reduce((a,e)=>a+Number(e.amount||0),0);$('budgetTotal').value=X.budget;$('budgetSummary').innerHTML=`<div class="toolrow"><b>Speso: ${money(spent)}</b><b>Rimanente: ${money(total-spent)}</b></div><div style="height:9px;background:var(--chip);border-radius:20px;overflow:hidden"><div style="height:100%;width:${total?Math.min(100,spent/total*100):0}%;background:${spent>total&&total?'#dc2626':'#16a34a'}"></div></div><div class="muted">Io: ${money(X.expenses.filter(e=>e.who==='Io').reduce((a,e)=>a+ +e.amount,0))} · Vera: ${money(X.expenses.filter(e=>e.who==='Vera').reduce((a,e)=>a+ +e.amount,0))} · Insieme: ${money(X.expenses.filter(e=>e.who==='Comune').reduce((a,e)=>a+ +e.amount,0))}</div>`;$('expenseList').innerHTML=X.expenses.map(e=>`<div class="expense"><span>${esc(e.name)} <small class="muted">· ${esc(e.who)}</small></span><b>${money(e.amount)} <button data-del-exp="${e.id}" aria-label="Elimina spesa">×</button></b></div>`).join('')||'<p class="muted">Nessuna spesa inserita.</p>'}
+function hav(a,b){return dist(a,b)}
+function renderNear(){const prior=$('nearPlace').value;const opts=Object.keys(P).filter(k=>k!=='hotel').map(k=>`<option value="${k}">${esc(P[k].n)}</option>`).join('');$('nearPlace').innerHTML=opts;if(prior&&P[prior])$('nearPlace').value=prior;const anchor=P[$('nearPlace').value]||P.hotel,rad=+$('nearRadius').value,type=$('nearType').value;
+const arr=Object.keys(P).filter(k=>P[k].k==='Mangiare').map(k=>({id:k,p:P[k],d:hav(anchor,P[k])})).filter(o=>o.d<=rad).filter(o=>type==='all'||(type==='fast'?/Five Guys|Shake Shack|McDonald|Greggs|Pret|Pizza Pilgrims|Heard Burger/i.test(o.p.n):type==='market'?/Market|food|street food|Hall|Chinatown/i.test(o.p.n):!/Market|food|street food|Hall|Chinatown/i.test(o.p.n))).sort((a,b)=>a.d-b.d).slice(0,9);
+$('nearResults').innerHTML=arr.map(o=>`<div class="nearitem"><span><b>${o.p.e} ${esc(o.p.n)}</b><small>${(o.d/1000).toFixed(1).replace('.',',')} km circa · ${esc(o.p.x||'')}</small></span><a target="_blank" rel="noopener" href="${gm(o.p)}">Mappa ↗</a></div>`).join('')||'<p class="muted">Nessun locale trovato in questo raggio. Aumenta la distanza o scegli un altro tipo.</p>'}
+function renderDiary(){ $('diaryText').value=X.diary[di]||''; }
+function renderPacking(){const all=[...X.packing,...X.customPacking],done=all.filter(x=>x.done).length;$('packingProgress').textContent=`${done} di ${all.length} completati`;$('packingList').innerHTML=all.map(x=>`<label class="checkitem"><input type="checkbox" data-pack="${esc(x.id)}" ${x.done?'checked':''}> <span>${esc(x.t)}</span></label>`).join('')}
+function renderExtra(){renderBudget();renderNear();renderDiary();renderPacking();$('planB').value=X.planB||'';saveExtra()}
+function smartOptimize(){const r=[...D().r];if(r.length<2){$('smartResult').textContent='Aggiungi almeno due tappe per ottimizzare il percorso.';return}let cur=P.hotel,remaining=[...r],ordered=[];while(remaining.length){remaining.sort((a,b)=>dist(cur,P[a])-dist(cur,P[b]));const next=remaining.shift();ordered.push(next);cur=P[next]}const before=r.map(k=>P[k].n).join(' → '),after=ordered.map(k=>P[k].n).join(' → ');if(before===after){$('smartResult').textContent='Il tuo itinerario è già nell’ordine geografico più vicino secondo questo calcolo.';return}if(confirm('Nuovo ordine suggerito:\n\n'+after+'\n\nVuoi applicarlo a '+DN[di]+'?')){D().r=ordered;upd();$('smartResult').textContent='Itinerario riordinato. Controlla comunque orari e tempi reali.'}}
+$('smartSort').addEventListener('click',smartOptimize);
+$('budgetTotal').addEventListener('change',e=>{X.budget=e.target.value;saveExtra();renderBudget()});
+$('addExpense').addEventListener('click',()=>{const name=$('expenseName').value.trim(),amount=Number($('expenseAmount').value);if(!name||!Number.isFinite(amount)||amount<=0){toast('Inserisci descrizione e importo validi.');return}X.expenses.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),name,amount,who:$('expenseWho').value,date:new Date().toISOString().slice(0,10)});$('expenseName').value='';$('expenseAmount').value='';saveExtra();renderBudget()});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.delExp){X.expenses=X.expenses.filter(x=>x.id!==b.dataset.delExp);saveExtra();renderBudget()} });
+$('nearPlace').addEventListener('change',renderNear);$('nearType').addEventListener('change',renderNear);$('nearRadius').addEventListener('change',renderNear);
+$('saveDiary').addEventListener('click',()=>{X.diary[di]=$('diaryText').value;saveExtra();$('diaryStatus').textContent='Ricordo salvato per '+DN[di]+'.'});
+$('diaryText').addEventListener('input',()=>{X.diary[di]=$('diaryText').value;saveExtra();$('diaryStatus').textContent='Salvataggio automatico.'});
+$('savePlanB').addEventListener('click',()=>{X.planB=$('planB').value;saveExtra();toast('Piano B salvato.')});
+$('packingList').addEventListener('change',e=>{const id=e.target.dataset.pack;if(!id)return;const x=[...X.packing,...X.customPacking].find(x=>x.id===id);if(x)x.done=e.target.checked;saveExtra();renderPacking()});
+$('addPack').addEventListener('click',()=>{const t=$('customPack').value.trim();if(!t)return;X.customPacking.push({id:'x'+Date.now().toString(36),t,done:false});$('customPack').value='';saveExtra();renderPacking()});
+$('resetPack').addEventListener('click',()=>{if(!confirm('Azzero tutte le spunte della checklist?'))return;[...X.packing,...X.customPacking].forEach(x=>x.done=false);saveExtra();renderPacking()});
+$('exportBackup').addEventListener('click',()=>{const data={version:1,planner:S,extra:X};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='londra-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)});
+$('importBackup').addEventListener('change',async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{const o=JSON.parse(await f.text());if(!o||!o.planner||!Array.isArray(o.planner.days)||o.planner.days.length!==4)throw Error('Formato non valido');if(!confirm('Importare il backup? I dati attuali del planner e degli strumenti saranno sostituiti.'))return;S=o.planner;X={...X,...(o.extra||{})};hydrate();save();saveExtra();render();renderExtra();toast('Backup importato.')}catch(err){toast('File di backup non valido.')}e.target.value=''});
+window.addEventListener('online',()=>saveExtra());window.addEventListener('offline',()=>saveExtra());
+$('offlineStatus').textContent=navigator.onLine?'Connessione disponibile · dati locali attivi':'Sei offline · dati locali consultabili';
+// Modalità telefono: layout verticale più leggibile su schermi piccoli.
+const mobileBtn=document.createElement('button');mobileBtn.className='tab';mobileBtn.id='mobileToggle';mobileBtn.textContent='📱 Modalità telefono';mobileBtn.style.marginLeft='auto';$('tabs').parentElement.appendChild(mobileBtn);mobileBtn.addEventListener('click',()=>{document.body.classList.toggle('mobile-mode');mobileBtn.textContent=document.body.classList.contains('mobile-mode')?'🖥️ Modalità normale':'📱 Modalità telefono';setTimeout(()=>geoMap&&geoMap.invalidateSize(true),200)});
+loadExtra();renderExtra();
 
-    <section class="page page-dark" id="page-ristoranti" data-page="ristoranti">
-      <div class="page-inner">
-        <div class="section-heading">
-          <p class="eyebrow">Dove fermarsi</p>
-          <h2>Il viaggio<br><em>ha anche gusto.</em></h2>
-          <p class="page-intro">Una selezione pensata lungo le vere tappe dell’itinerario: niente deviazioni inutili, solo posti semplici da raggiungere tra una attrazione e l’altra.</p>
-        </div>
-        <div class="food-filter" aria-label="Filtra ristoranti">
-          <button class="active" data-filter="all">Tutti</button>
-          <button data-filter="quick">Veloce</button>
-          <button data-filter="lunch">Pranzo</button>
-          <button data-filter="dinner">Cena</button>
-        </div>
-        <div class="food-grid" id="foodGrid"></div>
-      </div>
-    </section>
-
-    <section class="page" id="page-trasporti" data-page="trasporti">
-      <div class="page-inner">
-        <div class="section-heading">
-          <p class="eyebrow">Muoversi bene</p>
-          <h2>Piccole mappe,<br><em>grandi distanze.</em></h2>
-          <p class="page-intro">Le regole essenziali, i collegamenti principali e le alternative da usare quando siete stanchi o avete poco tempo.</p>
-        </div>
-        <div class="transport-grid" id="transportGrid"></div>
-      </div>
-    </section>
-
-    <section class="page page-diary" id="page-diario" data-page="diario">
-      <div class="page-inner">
-        <div class="section-heading">
-          <p class="eyebrow">Solo per te</p>
-          <h2>Diario<br><em>de facto.</em></h2>
-          <p class="page-intro">Uno spazio privato da usare in viaggio. Ogni voce appartiene al tuo account personale e non è visibile al tuo partner.</p>
-        </div>
-        <div id="diaryApp"></div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="footer-mark">L</div>
-    <p>Made for 5—8 December</p>
-  </footer>
-
-  <script src="./app.js"></script>
-</body>
-</html>
+</script>
+<script src="./private-diary.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+}
+</script>
+</body></html>
